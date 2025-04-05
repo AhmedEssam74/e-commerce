@@ -20,7 +20,7 @@ import '../../features/onBoarding/ui/on_boarding_screen.dart';
 import '../../features/profile/ui/screens/saved_addresses_screen.dart';
 
 class AppRouter {
-  Route? generteRouter(RouteSettings settings) {
+  Route? generateRouter(RouteSettings settings) {
     switch (settings.name) {
       case Routes.onboardingScreen:
         return buildRoute(const OnBoardingScreen());

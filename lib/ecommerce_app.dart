@@ -19,7 +19,7 @@ class EcommerceApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           initialRoute: Routes.onboardingScreen,
-          onGenerateRoute: appRouter.generteRouter,
+          onGenerateRoute: appRouter.generateRouter,
           theme: ThemeData(
             scaffoldBackgroundColor: Colors.white,
             appBarTheme: const AppBarTheme(
