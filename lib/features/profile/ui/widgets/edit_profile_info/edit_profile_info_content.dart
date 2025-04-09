@@ -1,8 +1,15 @@
+import 'package:ecommerce/core/helpers/navigation_extension.dart';
 import 'package:ecommerce/core/helpers/spacing.dart';
+import 'package:ecommerce/core/widgets/app_error_dialog.dart';
+import 'package:ecommerce/core/widgets/app_loader.dart';
 import 'package:ecommerce/core/widgets/app_text_button.dart';
 import 'package:ecommerce/core/widgets/app_text_form_field.dart';
-import 'package:ecommerce/core/widgets/phone_number_form_field.dart';
+import 'package:ecommerce/core/widgets/phone_number_widget.dart';
+import 'package:ecommerce/features/profile/cubit/user_data_cubit/user_data_cubit.dart';
+import 'package:ecommerce/features/profile/cubit/user_data_cubit/user_data_states.dart';
+import 'package:ecommerce/features/profile/data/repository/user_data_repository/repo_implementation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hugeicons/hugeicons.dart';
 import '../../../../../core/theming/colors.dart';
 import '../../../../../core/theming/styles.dart';
@@ -16,88 +23,118 @@ class EditProfileInfoContent extends StatefulWidget {
 }
 
 class _EditProfileInfoContentState extends State<EditProfileInfoContent> {
-  final TextEditingController userNameController =
-      TextEditingController(text: 'Jannis Schmitt');
+  final TextEditingController userNameController = TextEditingController();
 
-  final TextEditingController emailController =
-      TextEditingController(text: 'jannis.shmitt123@email.com');
+  final TextEditingController emailController = TextEditingController();
 
-  final TextEditingController passwordController =
-      TextEditingController(text: '123456789');
+  final TextEditingController passwordController = TextEditingController();
 
-  final TextEditingController phoneController =
-      TextEditingController(text: '1023960182');
-@override
+  final TextEditingController phoneController = TextEditingController();
+
+  @override
   void dispose() {
-   userNameController.dispose();
-   emailController.dispose();
-   passwordController.dispose();
-   phoneController.dispose();
+    userNameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    phoneController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
-    return Form(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          verticalSpace(10),
-          Text('User Name', style: TextStyles.font14GreyMedium),
-          verticalSpace(10),
-          AppTextFormField(
-            controller: userNameController,
-            hintText: 'Jannis Schmitt',
-            validator: (value) {},
-          ),
-          verticalSpace(15),
-          Text('Email', style: TextStyles.font14GreyMedium),
-          verticalSpace(10),
-          AppTextFormField(
-            controller: emailController,
-            hintText: 'jannis.shmitt123@email.com',
-            validator: (value) {},
-          ),
-          verticalSpace(15),
-          Text('Password', style: TextStyles.font14GreyMedium),
-          verticalSpace(10),
-          AppTextFormField(
-            controller: passwordController,
-            hintText: '123456789',
-            validator: (value) {},
-            isObscureText: true,
-            suffixIcon: GestureDetector(
-              onTap: () {
-                showModalBottomSheet(
-                    isScrollControlled: true,
-                    context: context,
-                    builder: (_) => const EditUserPasswordSheet());
+    return BlocProvider(
+      create: (context) =>
+          GetUserDataCubit(GetUserDataRepoImpl())..getUserData(),
+      child: BlocConsumer<GetUserDataCubit, GetUserDataStates>(
+        listener: (context, state) {
+          if (state is GetUserDataLoadingState) {
+            AppLoader.show(context);
+          } else if (state is GetUserDataErrorState) {
+            AppErrorDialog.showErrorDialog(
+              context,
+              message: "Something went wrong with your data please try again",
+              onConfirm: () {
+                context.pop();
+                context.pop();
               },
-              child: const HugeIcon(
-                icon: HugeIcons.strokeRoundedPencilEdit02,
-                color: ColorsManager.mainGreen,
-                size: 22,
-              ),
+            );
+          } else if (state is GetUserDataSuccessState) {
+            // context.pop();
+          }
+        },
+        builder: (context, state) {
+          var bloc = BlocProvider.of<GetUserDataCubit>(context);
+          return Form(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                verticalSpace(10),
+                Text('User Name', style: TextStyles.font14GreyMedium),
+                verticalSpace(10),
+                AppTextFormField(
+                  controller: userNameController,
+                  hintText:
+                      '${bloc.userDataResponse?.firstName} ${bloc.userDataResponse?.lastName}',
+                  validator: (value) {},
+                ),
+                verticalSpace(15),
+                Text('Email', style: TextStyles.font14GreyMedium),
+                verticalSpace(10),
+                AppTextFormField(
+                  controller: emailController,
+                  hintText: '${bloc.userDataResponse?.email}',
+                  validator: (value) {},
+                ),
+                verticalSpace(15),
+                Text('Password', style: TextStyles.font14GreyMedium),
+                verticalSpace(10),
+                AppTextFormField(
+                  controller: passwordController,
+                  hintText: '********',
+                  isReadOnly: true,
+                  validator: (value) {},
+                  isObscureText: true,
+                  suffixIcon: GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (_) => const EditUserPasswordSheet());
+                    },
+                    child: const HugeIcon(
+                      icon: HugeIcons.strokeRoundedPencilEdit02,
+                      color: ColorsManager.mainGreen,
+                      size: 22,
+                    ),
+                  ),
+                ),
+                verticalSpace(15),
+                Text('Phone Number', style: TextStyles.font14GreyMedium),
+                verticalSpace(10),
+                // PhoneNumberFormField(
+                //   phoneController: phoneController,
+                //   isScrollPadding: true,
+                // ),
+                PhoneNumberWidget(
+                  phoneNumberController: phoneController,
+                  hintText:
+                      '${bloc.userDataResponse?.phoneNumber?.substring(3)}',
+                ),
+                verticalSpace(25),
+                AppTextButton(buttonText: 'Save Changes', onPressed: () {}),
+                verticalSpace(15),
+                AppTextButton(
+                  backgroundColor: ColorsManager.lightRed,
+                  textStyle: TextStyles.font16MainGreenMedium
+                      .copyWith(color: ColorsManager.red),
+                  buttonText: 'Delete Account',
+                  onPressed: () {},
+                ),
+                verticalSpace(25),
+              ],
             ),
-          ),
-          verticalSpace(15),
-          Text('Phone Number', style: TextStyles.font14GreyMedium),
-          verticalSpace(10),
-          PhoneNumberFormField(
-            phoneController: phoneController,
-            isScrollPadding: true,
-          ),
-          verticalSpace(25),
-          AppTextButton(buttonText: 'Save Changes', onPressed: () {}),
-          verticalSpace(15),
-          AppTextButton(
-            backgroundColor: ColorsManager.lightRed,
-            textStyle: TextStyles.font16MainGreenMedium
-                .copyWith(color: ColorsManager.red),
-            buttonText: 'Delete Account',
-            onPressed: () {},
-          ),
-          verticalSpace(25),
-        ],
+          );
+        },
       ),
     );
   }

@@ -10,7 +10,7 @@ class GoogleBtn extends StatelessWidget {
     return GoogleOrAppleBtn(
       iconAsset: Assets.svgsGoogle,
       lableText: "Continue with Google",
-      onTap: () {},
+      onTap: ()  {},
     );
   }
 }

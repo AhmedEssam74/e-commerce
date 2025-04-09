@@ -48,7 +48,7 @@ class _LoginFormState extends State<LoginForm> {
           } else if (state is LoginErrorState) {
             AppErrorDialog.showErrorDialog(
               context,
-              message: "Email or password is not valid",
+              message: "Email or password is not correct",
               onConfirm: () {
                 context.pop();
                 context.pop();

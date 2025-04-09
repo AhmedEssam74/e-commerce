@@ -117,6 +117,7 @@ class _SignupFormState extends State<SignupForm> {
                 // ),
                 PhoneNumberWidget(
                   phoneNumberController: phoneController,
+                  hintText: 'Phone Number',
                 ),
                 verticalSpace(15),
                 AppTextFormField(

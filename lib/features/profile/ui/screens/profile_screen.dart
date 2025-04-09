@@ -1,4 +1,7 @@
+import 'package:ecommerce/core/helpers/navigation_extension.dart';
 import 'package:ecommerce/core/helpers/spacing.dart';
+import 'package:ecommerce/core/helpers/token_storage.dart';
+import 'package:ecommerce/core/routing/routes.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/theming/colors.dart';
 import '../../../../core/theming/styles.dart';
@@ -32,7 +35,16 @@ class ProfileScreen extends StatelessWidget {
                   textStyle: TextStyles.font16MainGreenMedium
                       .copyWith(color: ColorsManager.red),
                   buttonText: 'Logout',
-                  onPressed: () {},
+                  onPressed: () async {
+                    final accessToken = await TokenStorage.getAccessToken();
+                    final refreshToken = await TokenStorage.getAccessToken();
+                    if (accessToken != null && accessToken.isNotEmpty ||
+                        refreshToken != null && refreshToken.isNotEmpty) {
+                      TokenStorage.deleteTokens();
+                      context.pushNamedAndRemoveUntil(Routes.loginScreen,
+                          predicate: (context) => false);
+                    }
+                  },
                 ),
                 verticalSpace(25),
               ],

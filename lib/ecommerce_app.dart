@@ -6,7 +6,10 @@ import 'core/routing/routes.dart';
 
 class EcommerceApp extends StatelessWidget {
   const EcommerceApp({super.key, required this.appRouter});
+
   final AppRouter appRouter;
+  // final loggedIn = AppConstants.isLoggedIn;
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -18,6 +21,9 @@ class EcommerceApp extends StatelessWidget {
         },
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
+          // initialRoute: loggedIn == true
+          //     ? Routes.mainNavigationBar
+          //     : Routes.onboardingScreen,
           initialRoute: Routes.onboardingScreen,
           onGenerateRoute: appRouter.generateRouter,
           theme: ThemeData(

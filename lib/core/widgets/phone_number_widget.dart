@@ -7,9 +7,11 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 
 class PhoneNumberWidget extends StatelessWidget {
   final TextEditingController phoneNumberController;
+  final String? hintText;
 
- const PhoneNumberWidget({
+  const PhoneNumberWidget({
     super.key,
+    this.hintText,
     required this.phoneNumberController,
   });
 
@@ -22,7 +24,7 @@ class PhoneNumberWidget extends StatelessWidget {
           color: ColorsManager.mainGreen,
         ),
         counterText: "",
-        hintText: 'Phone Number',
+        hintText: hintText,
         hintStyle: TextStyles.font13GreyMedium,
         contentPadding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 12.h),
         focusedBorder: OutlineInputBorder(
