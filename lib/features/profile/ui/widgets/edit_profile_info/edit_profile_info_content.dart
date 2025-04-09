@@ -73,8 +73,10 @@ class _EditProfileInfoContentState extends State<EditProfileInfoContent> {
                 verticalSpace(10),
                 AppTextFormField(
                   controller: userNameController,
-                  hintText:
-                      '${bloc.userDataResponse?.firstName} ${bloc.userDataResponse?.lastName}',
+                  hintText: bloc.userDataResponse?.firstName == null ||
+                          bloc.userDataResponse?.lastName == null
+                      ? 'user name'
+                      : '${bloc.userDataResponse?.firstName} ${bloc.userDataResponse?.lastName}',
                   validator: (value) {},
                 ),
                 verticalSpace(15),
@@ -82,7 +84,9 @@ class _EditProfileInfoContentState extends State<EditProfileInfoContent> {
                 verticalSpace(10),
                 AppTextFormField(
                   controller: emailController,
-                  hintText: '${bloc.userDataResponse?.email}',
+                  hintText: bloc.userDataResponse?.email == null
+                      ? 'email'
+                      : '${bloc.userDataResponse?.email}',
                   validator: (value) {},
                 ),
                 verticalSpace(15),
@@ -117,8 +121,9 @@ class _EditProfileInfoContentState extends State<EditProfileInfoContent> {
                 // ),
                 PhoneNumberWidget(
                   phoneNumberController: phoneController,
-                  hintText:
-                      '${bloc.userDataResponse?.phoneNumber?.substring(3)}',
+                  hintText: bloc.userDataResponse?.phoneNumber == null
+                      ? '0000000000'
+                      : '${bloc.userDataResponse?.phoneNumber}',
                 ),
                 verticalSpace(25),
                 AppTextButton(buttonText: 'Save Changes', onPressed: () {}),

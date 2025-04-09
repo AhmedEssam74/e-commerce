@@ -1,6 +1,7 @@
 import 'package:ecommerce/features/Auth/login/cubit/login_states.dart';
 import 'package:ecommerce/features/Auth/login/data/models/user_response.dart';
 import 'package:ecommerce/features/Auth/login/data/repository/repo_interface.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginCubit extends Cubit<LoginStates> {
@@ -17,7 +18,7 @@ class LoginCubit extends Cubit<LoginStates> {
       emit(LoginSuccessState());
     } catch (e) {
       emit(LoginErrorState('$e'));
-      print(e);
+      debugPrint('$e');
     }
   }
 }
