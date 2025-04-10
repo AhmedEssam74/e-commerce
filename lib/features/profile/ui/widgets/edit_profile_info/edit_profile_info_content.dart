@@ -1,9 +1,11 @@
 import 'package:ecommerce/core/helpers/navigation_extension.dart';
 import 'package:ecommerce/core/helpers/spacing.dart';
+import 'package:ecommerce/core/routing/routes.dart';
 import 'package:ecommerce/core/widgets/app_error_dialog.dart';
 import 'package:ecommerce/core/widgets/app_loader.dart';
 import 'package:ecommerce/core/widgets/app_text_button.dart';
 import 'package:ecommerce/core/widgets/app_text_form_field.dart';
+import 'package:ecommerce/core/widgets/app_toast_message.dart';
 import 'package:ecommerce/core/widgets/phone_number_widget.dart';
 import 'package:ecommerce/features/profile/cubit/user_data_cubit/user_data_cubit.dart';
 import 'package:ecommerce/features/profile/cubit/user_data_cubit/user_data_states.dart';
@@ -23,7 +25,9 @@ class EditProfileInfoContent extends StatefulWidget {
 }
 
 class _EditProfileInfoContentState extends State<EditProfileInfoContent> {
-  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController firstNameController = TextEditingController();
+
+  final TextEditingController lastNameController = TextEditingController();
 
   final TextEditingController emailController = TextEditingController();
 
@@ -33,12 +37,15 @@ class _EditProfileInfoContentState extends State<EditProfileInfoContent> {
 
   @override
   void dispose() {
-    userNameController.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     phoneController.dispose();
     super.dispose();
   }
+
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -47,43 +54,78 @@ class _EditProfileInfoContentState extends State<EditProfileInfoContent> {
           GetUserDataCubit(GetUserDataRepoImpl())..getUserData(),
       child: BlocConsumer<GetUserDataCubit, GetUserDataStates>(
         listener: (context, state) {
-          if (state is GetUserDataLoadingState) {
+          if (state is GetUserDataLoadingState ||
+              state is EditUserDataLoadingState) {
             AppLoader.show(context);
           } else if (state is GetUserDataErrorState) {
             AppErrorDialog.showErrorDialog(
               context,
-              message: "Something went wrong with your data please try again",
+              message: "Something wrong with your data please try again",
               onConfirm: () {
                 context.pop();
                 context.pop();
               },
             );
-          } else if (state is GetUserDataSuccessState) {
+          } else if (state is EditUserDataErrorState ){
+            AppErrorDialog.showErrorDialog(
+              context,
+              message: "check you phone number",
+              onConfirm: () {
+                context.pop();
+                context.pop();
+              },
+            );
+          }
+          else if (state is GetUserDataSuccessState) {
             // context.pop();
+          } else if (state is EditUserDataSuccessState) {
+            context.pushNamed(Routes.mainNavigationBar);
+            AppToast.showSuccess("Data updated successfully");
           }
         },
         builder: (context, state) {
           var bloc = BlocProvider.of<GetUserDataCubit>(context);
           return Form(
+            key: formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 verticalSpace(10),
-                Text('User Name', style: TextStyles.font14GreyMedium),
+                Text('First Name', style: TextStyles.font14GreyMedium),
                 verticalSpace(10),
                 AppTextFormField(
-                  controller: userNameController,
-                  hintText: bloc.userDataResponse?.firstName == null ||
-                          bloc.userDataResponse?.lastName == null
-                      ? 'user name'
-                      : '${bloc.userDataResponse?.firstName} ${bloc.userDataResponse?.lastName}',
-                  validator: (value) {},
+                  controller: firstNameController,
+                  hintText: bloc.userDataResponse?.firstName == null
+                      ? 'first name'
+                      : '${bloc.userDataResponse?.firstName} ',
+                  validator: (value) {
+                    if (value != null && value.isEmpty) {
+                      firstNameController.text =
+                          bloc.userDataResponse?.firstName ?? '';
+                    }
+                  },
+                ),
+                verticalSpace(10),
+                Text('Last Name', style: TextStyles.font14GreyMedium),
+                verticalSpace(10),
+                AppTextFormField(
+                  controller: lastNameController,
+                  hintText: bloc.userDataResponse?.lastName == null
+                      ? 'last name'
+                      : '${bloc.userDataResponse?.lastName}',
+                  validator: (value) {
+                    if (value != null && value.isEmpty) {
+                      lastNameController.text =
+                          bloc.userDataResponse?.lastName ?? '';
+                    }
+                  },
                 ),
                 verticalSpace(15),
                 Text('Email', style: TextStyles.font14GreyMedium),
                 verticalSpace(10),
                 AppTextFormField(
                   controller: emailController,
+                  isReadOnly: true,
                   hintText: bloc.userDataResponse?.email == null
                       ? 'email'
                       : '${bloc.userDataResponse?.email}',
@@ -126,7 +168,22 @@ class _EditProfileInfoContentState extends State<EditProfileInfoContent> {
                       : '${bloc.userDataResponse?.phoneNumber}',
                 ),
                 verticalSpace(25),
-                AppTextButton(buttonText: 'Save Changes', onPressed: () {}),
+                AppTextButton(
+                  buttonText: 'Save Changes',
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      if (phoneController.text.isEmpty) {
+                        phoneController.text =
+                            bloc.userDataResponse?.phoneNumber ?? "";
+                      }
+                      bloc.editUserData(
+                        firstNameController.text,
+                        lastNameController.text,
+                        phoneController.text,
+                      );
+                    }
+                  },
+                ),
                 verticalSpace(15),
                 AppTextButton(
                   backgroundColor: ColorsManager.lightRed,

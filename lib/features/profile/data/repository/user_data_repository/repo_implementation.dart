@@ -25,4 +25,35 @@ class GetUserDataRepoImpl implements GetUserDataRepo {
       throw Exception("Error with data");
     }
   }
+
+  @override
+  Future<UserDataResponse> editUserData(
+    String? firstName,
+    String? lastName,
+    String? phoneNumber,
+  ) async {
+    final accessToken = await TokenStorage.getAccessToken();
+    final Uri url =
+        Uri.parse(ApiConstants.baseUrl + ApiConstants.editUserData);
+    final response = await http.patch(
+      url,
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+        'Accept': 'application/json'
+      },
+      body: {
+        'first_name': firstName,
+        'last_name': lastName,
+        'phone_number': phoneNumber,
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      var json = await jsonDecode(response.body);
+      UserDataResponse userDataResponse = UserDataResponse.fromJson(json);
+      return userDataResponse;
+    } else {
+      // throw Exception('Something went Wrong');
+      throw Exception();
+    }
+  }
 }

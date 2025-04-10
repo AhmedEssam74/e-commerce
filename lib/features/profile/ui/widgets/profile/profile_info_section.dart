@@ -75,14 +75,19 @@ class ProfileInfoSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${bloc.userDataResponse?.firstName} ${bloc.userDataResponse?.lastName}',
+                  bloc.userDataResponse?.firstName == null ||
+                          bloc.userDataResponse?.lastName == null
+                      ? "user name"
+                      : '${bloc.userDataResponse?.firstName} ${bloc.userDataResponse?.lastName}',
                   style: TextStyles.font14BlackMedium,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 verticalSpace(4),
                 Text(
-                  '${bloc.userDataResponse?.email}',
+                  bloc.userDataResponse?.email == null
+                      ? "email@gmail.com"
+                      : '${bloc.userDataResponse?.email}',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyles.font14GreyRegular,

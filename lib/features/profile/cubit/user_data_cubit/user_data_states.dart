@@ -11,3 +11,12 @@ class GetUserDataErrorState extends GetUserDataStates {
 
   GetUserDataErrorState(this.error);
 }
+class EditUserDataSuccessState extends GetUserDataStates {}
+
+class EditUserDataLoadingState extends GetUserDataStates {}
+
+class EditUserDataErrorState extends GetUserDataStates {
+  String error;
+
+  EditUserDataErrorState(this.error);
+}

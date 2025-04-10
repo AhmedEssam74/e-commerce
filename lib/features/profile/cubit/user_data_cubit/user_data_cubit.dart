@@ -10,13 +10,32 @@ class GetUserDataCubit extends Cubit<GetUserDataStates> {
 
   GetUserDataCubit(this.repo) : super(GetUserDataInitState());
 
-  void getUserData ()async{
+  void getUserData() async {
     try {
       emit(GetUserDataLoadingState());
       userDataResponse = await repo.getUserData();
       emit(GetUserDataSuccessState());
-    }catch (e){
+    } catch (e) {
       emit(GetUserDataErrorState('$e'));
+      debugPrint('$e');
+    }
+  }
+
+  void editUserData(
+    String? firstName,
+    String? lastName,
+    String? phoneNumber,
+  ) async {
+    try {
+      emit(EditUserDataLoadingState());
+      userDataResponse = await repo.editUserData(
+        firstName,
+        lastName,
+        phoneNumber,
+      );
+      emit(EditUserDataSuccessState());
+    } catch (e) {
+      emit(EditUserDataErrorState('$e'));
       debugPrint('$e');
     }
   }
