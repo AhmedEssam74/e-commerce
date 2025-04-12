@@ -66,7 +66,7 @@ class _EditProfileInfoContentState extends State<EditProfileInfoContent> {
                 context.pop();
               },
             );
-          } else if (state is EditUserDataErrorState ){
+          } else if (state is EditUserDataErrorState) {
             AppErrorDialog.showErrorDialog(
               context,
               message: "check you phone number",
@@ -75,8 +75,7 @@ class _EditProfileInfoContentState extends State<EditProfileInfoContent> {
                 context.pop();
               },
             );
-          }
-          else if (state is GetUserDataSuccessState) {
+          } else if (state is GetUserDataSuccessState) {
             // context.pop();
           } else if (state is EditUserDataSuccessState) {
             context.pushNamed(Routes.mainNavigationBar);

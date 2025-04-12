@@ -1,3 +1,4 @@
+import 'package:ecommerce/core/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +9,6 @@ class EcommerceApp extends StatelessWidget {
   const EcommerceApp({super.key, required this.appRouter});
 
   final AppRouter appRouter;
-  // final loggedIn = AppConstants.isLoggedIn;
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +21,10 @@ class EcommerceApp extends StatelessWidget {
         },
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          // initialRoute: loggedIn == true
-          //     ? Routes.mainNavigationBar
-          //     : Routes.onboardingScreen,
-          initialRoute: Routes.onboardingScreen,
+          initialRoute: AppConstants.isLoggedIn == true
+              ? Routes.mainNavigationBar
+              : Routes.onboardingScreen,
+          // initialRoute: Routes.onboardingScreen,
           onGenerateRoute: appRouter.generateRouter,
           theme: ThemeData(
             scaffoldBackgroundColor: Colors.white,

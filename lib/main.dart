@@ -1,3 +1,4 @@
+import 'package:ecommerce/core/helpers/auth_status_handler.dart';
 import 'package:ecommerce/core/networking/cubit_observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +11,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   ScreenUtil.ensureScreenSize();
   Bloc.observer = MyBlocObserver();
+  await AuthStatusHandler.checkUserLoginStatus();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(EcommerceApp(appRouter: AppRouter()));
