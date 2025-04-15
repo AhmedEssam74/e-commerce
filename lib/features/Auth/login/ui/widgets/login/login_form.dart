@@ -6,9 +6,9 @@ import 'package:ecommerce/core/widgets/app_error_dialog.dart';
 import 'package:ecommerce/core/widgets/app_loader.dart';
 import 'package:ecommerce/core/widgets/app_text_button.dart';
 import 'package:ecommerce/core/widgets/app_toast_message.dart';
-import 'package:ecommerce/features/Auth/login/cubit/login_cubit.dart';
-import 'package:ecommerce/features/Auth/login/cubit/login_states.dart';
-import 'package:ecommerce/features/Auth/login/data/repository/repo_implementation.dart';
+import 'package:ecommerce/features/Auth/login/cubit/login_cubit/login_cubit.dart';
+import 'package:ecommerce/features/Auth/login/cubit/login_cubit/login_states.dart';
+import 'package:ecommerce/features/Auth/login/data/repository/login_repo/repo_implementation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -120,9 +120,9 @@ class _LoginFormState extends State<LoginForm> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter Your password';
                     }
-                    if (AppRegex.isPasswordValid(value) != true) {
-                      return "please enter valid Password";
-                    }
+                    // if (AppRegex.isPasswordValid(value) != true) {
+                    //   return "please enter valid Password";
+                    // }
                     return null;
                   },
                 ),

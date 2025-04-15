@@ -21,7 +21,7 @@ class NotificationCard extends StatelessWidget {
       },
       key: UniqueKey(),
       direction: DismissDirection.endToStart,
-      background: const DeleteItemBackground(deleIconSize: 22),
+      background: const DeleteItemBackground(deleteIconSize: 22),
       child: Container(
         padding: const EdgeInsets.all(10),
         margin: const EdgeInsets.only(bottom: 15),

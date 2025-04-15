@@ -1,6 +1,6 @@
-import 'package:ecommerce/features/Auth/login/cubit/login_states.dart';
+import 'package:ecommerce/features/Auth/login/cubit/login_cubit/login_states.dart';
 import 'package:ecommerce/features/Auth/login/data/models/user_response.dart';
-import 'package:ecommerce/features/Auth/login/data/repository/repo_interface.dart';
+import 'package:ecommerce/features/Auth/login/data/repository/login_repo/repo_interface.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

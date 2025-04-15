@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:ecommerce/core/helpers/token_storage.dart';
 import 'package:ecommerce/core/networking/api_constants.dart';
 import 'package:ecommerce/features/Auth/login/data/models/user_response.dart';
-import 'package:ecommerce/features/Auth/login/data/repository/repo_interface.dart';
+import 'package:ecommerce/features/Auth/login/data/repository/login_repo/repo_interface.dart';
 import 'package:http/http.dart' as http;
 
 class LoginRepoImpl implements LoginRepo {
