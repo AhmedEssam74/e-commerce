@@ -8,5 +8,6 @@ class ApiConstants {
   static const String changePassword = "auth/api/users/me/";
   static const String editUserData = "auth/api/users/me/";
   static const String searchProduct = 'products/';
+  static const String cartProducts= 'cart/';
 }
  

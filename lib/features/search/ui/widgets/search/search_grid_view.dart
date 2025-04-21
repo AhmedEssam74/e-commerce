@@ -2,6 +2,7 @@ import 'package:ecommerce/core/helpers/navigation_extension.dart';
 import 'package:ecommerce/core/helpers/spacing.dart';
 import 'package:ecommerce/core/routing/routes.dart';
 import 'package:ecommerce/core/widgets/app_error_dialog.dart';
+import 'package:ecommerce/core/widgets/app_toast_message.dart';
 import 'package:ecommerce/features/search/cubit/search_item_cubit.dart';
 import 'package:ecommerce/features/search/cubit/search_item_states.dart';
 import 'package:ecommerce/features/search/data/repository/repo_implementation.dart';
@@ -53,7 +54,7 @@ class _SearchGridContentState extends State<_SearchGridContent> {
               if (value.isNotEmpty) {
                 bloc.searchProduct(productName: value);
               } else {
-                bloc.searchProduct(productName: "k");
+                bloc.searchProduct(productName: "/./././././././././././././");
               }
             },
           ),
@@ -61,19 +62,18 @@ class _SearchGridContentState extends State<_SearchGridContent> {
           BlocConsumer<SearchProductCubit, SearchProductStates>(
             listener: (context, state) {
               if (state is SearchProductErrorState) {
-                AppErrorDialog.showErrorDialog(
-                  context,
-                  // message: "something went wrong please try again.",
-                  message: state.error,
-                  onConfirm: (){
-                    context.pop();
-                  }
-                );
+                AppErrorDialog.showErrorDialog(context,
+                    message: "something went wrong please try again.",
+                    // message: state.error,
+                    onConfirm: () {
+                  context.pop();
+                });
+              } else if (state is SearchProductEmptyState) {
+                AppToast.showSuccess("No Such Products");
               }
             },
             builder: (context, state) {
               var allProducts = bloc.searchResponse?.products ?? [];
-              debugPrint('${allProducts.length}');
               return Visibility(
                 visible: allProducts.isEmpty ? true : false,
                 replacement: Expanded(

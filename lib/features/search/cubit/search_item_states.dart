@@ -4,6 +4,8 @@ class InitSearchProductState extends SearchProductStates {}
 
 class SearchProductLoadingState extends SearchProductStates {}
 
+class SearchProductEmptyState extends SearchProductStates {}
+
 class SearchProductSuccessState extends SearchProductStates {}
 
 class SearchProductErrorState extends SearchProductStates {

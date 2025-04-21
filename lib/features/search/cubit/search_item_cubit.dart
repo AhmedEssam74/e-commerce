@@ -28,7 +28,11 @@ class SearchProductCubit extends Cubit<SearchProductStates> {
         maxPrice: maxPrice,
         pageSize: pageSize,
       );
-      emit(SearchProductSuccessState());
+      if (searchResponse!.products!.isEmpty){
+        emit(SearchProductEmptyState());
+      }else {
+        emit(SearchProductSuccessState());
+      }
     } catch (e) {
       emit(SearchProductErrorState('$e'));
       debugPrint('$e');

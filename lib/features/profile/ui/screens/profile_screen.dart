@@ -2,6 +2,7 @@ import 'package:ecommerce/core/helpers/navigation_extension.dart';
 import 'package:ecommerce/core/helpers/spacing.dart';
 import 'package:ecommerce/core/helpers/token_storage.dart';
 import 'package:ecommerce/core/routing/routes.dart';
+import 'package:ecommerce/features/profile/ui/screens/language_screen.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/theming/colors.dart';
 import '../../../../core/theming/styles.dart';
@@ -28,6 +29,7 @@ class ProfileScreen extends StatelessWidget {
                 verticalSpace(10),
                 const ProfileInfoSection(),
                 const ProfileOptionsSection(),
+                const LanguageScreen(),
                 const NotificationSettingsSection(),
                 const ProfileSupportSection(),
                 AppTextButton(

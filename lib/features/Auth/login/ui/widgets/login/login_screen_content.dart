@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ecommerce/core/helpers/navigation_extension.dart';
 import 'package:ecommerce/core/helpers/spacing.dart';
 import 'package:ecommerce/core/routing/routes.dart';
@@ -51,7 +52,7 @@ class _LoginScreenContentState extends State<LoginScreenContent> {
                     const LoginForm(),
                     verticalSpace(20),
                     AppTextButton(
-                      buttonText: "Continue as a guest",
+                      buttonText: "Continue_as_a_guest".tr(),
                       backgroundColor: Colors.transparent,
                       textStyle: TextStyles.font16MainGreenMedium,
                       borderColor: ColorsManager.mainGreen,
