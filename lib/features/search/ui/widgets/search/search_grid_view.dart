@@ -1,44 +1,104 @@
+import 'package:ecommerce/core/helpers/navigation_extension.dart';
 import 'package:ecommerce/core/helpers/spacing.dart';
-import 'package:ecommerce/features/home/data/utils/categories_images.dart';
+import 'package:ecommerce/core/routing/routes.dart';
+import 'package:ecommerce/core/widgets/app_error_dialog.dart';
+import 'package:ecommerce/core/widgets/app_toast_message.dart';
+import 'package:ecommerce/features/search/cubit/search_item_cubit.dart';
+import 'package:ecommerce/features/search/cubit/search_item_states.dart';
+import 'package:ecommerce/features/search/data/repository/repo_implementation.dart';
+import 'package:ecommerce/features/search/ui/widgets/search/empty_search_widget.dart';
 import 'package:ecommerce/features/search/ui/widgets/search/search_field.dart';
+import 'package:ecommerce/features/search/ui/widgets/search/search_product_item.dart';
 import 'package:flutter/material.dart';
-import '../../../../../core/theming/styles.dart';
-import 'search_categroy_card.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SearchGridView extends StatelessWidget {
   const SearchGridView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => SearchProductCubit(SearchProductRepoImpl()),
+      child: const _SearchGridContent(),
+    );
+  }
+}
+
+class _SearchGridContent extends StatefulWidget {
+  const _SearchGridContent();
+
+  @override
+  State<_SearchGridContent> createState() => _SearchGridContentState();
+}
+
+class _SearchGridContentState extends State<_SearchGridContent> {
+  final TextEditingController searchController = TextEditingController();
+
+  @override
+  void dispose() {
+    searchController.clear();
+    searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var bloc = BlocProvider.of<SearchProductCubit>(context);
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SearchField(
-            controller: TextEditingController(),
-            onChange: (String value) {},
+            controller: searchController,
+            onChange: (String value) {
+              if (value.isNotEmpty) {
+                bloc.searchProduct(productName: value);
+              } else {
+                bloc.searchProduct(productName: "/./././././././././././././");
+              }
+            },
           ),
           verticalSpace(20),
-          Text('Categories', style: TextStyles.font16BlackBold),
-          verticalSpace(15),
-          Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.only(bottom: 20),
-              itemCount: categoriesImages.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 15,
-                  mainAxisExtent: 160),
-              itemBuilder: (context, index) {
-                return SearchCategroyCard(
-                  image: categoriesImages[index],
-                  title: 'Sofas & Couches',
-                  description:
-                      'Shop latest and modern design for featured & special sofas couches',
-                );
-              },
-            ),
+          BlocConsumer<SearchProductCubit, SearchProductStates>(
+            listener: (context, state) {
+              if (state is SearchProductErrorState) {
+                AppErrorDialog.showErrorDialog(context,
+                    message: "something went wrong please try again.",
+                    // message: state.error,
+                    onConfirm: () {
+                  context.pop();
+                });
+              } else if (state is SearchProductEmptyState) {
+                AppToast.showSuccess("No Such Products");
+              }
+            },
+            builder: (context, state) {
+              var allProducts = bloc.searchResponse?.products ?? [];
+              return Visibility(
+                visible: allProducts.isEmpty ? true : false,
+                replacement: Expanded(
+                  child: SingleChildScrollView(
+                    child: FractionallySizedBox(
+                      widthFactor: 1,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: allProducts.length,
+                        itemBuilder: (context, index) => GestureDetector(
+                          onTap: () {
+                            context.pushNamed(Routes.productDetailsScreen);
+                          },
+                          child: SearchProductItem(
+                            products: allProducts[index],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                child: const EmptySearchWidget(),
+              );
+            },
           ),
         ],
       ),

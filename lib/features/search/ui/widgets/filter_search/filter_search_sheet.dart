@@ -10,7 +10,8 @@ class FilterSearchSheet extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       width: double.infinity,
-      height: MediaQuery.sizeOf(context).height*0.95,
+      // height: MediaQuery.sizeOf(context).height*0.95,
+      height: MediaQuery.sizeOf(context).height*0.55,
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(

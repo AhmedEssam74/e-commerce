@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:ecommerce/core/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,7 +8,9 @@ import 'core/routing/routes.dart';
 
 class EcommerceApp extends StatelessWidget {
   const EcommerceApp({super.key, required this.appRouter});
+
   final AppRouter appRouter;
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -18,7 +22,12 @@ class EcommerceApp extends StatelessWidget {
         },
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          initialRoute: Routes.onboardingScreen,
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
+          initialRoute: AppConstants.isLoggedIn == true
+              ? Routes.mainNavigationBar
+              : Routes.onboardingScreen,
           onGenerateRoute: appRouter.generateRouter,
           theme: ThemeData(
             scaffoldBackgroundColor: Colors.white,

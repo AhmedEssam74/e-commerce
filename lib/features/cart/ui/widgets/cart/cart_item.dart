@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce/core/helpers/spacing.dart';
 import 'package:ecommerce/core/theming/colors.dart';
 import 'package:ecommerce/core/theming/styles.dart';
@@ -10,13 +11,13 @@ class CartItem extends StatelessWidget {
       {super.key,
       required this.image,
       required this.category,
-      required this.productName,
+      // required this.productName,
       required this.description,
       required this.price,
       required this.quantity,
       required this.onIncrementTap,
       required this.onDecrementTap, required this.onDismissed});
-  final String image, category, productName, description, price;
+  final String image, category, /*productName, */ description, price;
   final int quantity;
   final VoidCallback onIncrementTap, onDecrementTap,onDismissed;
   @override
@@ -62,11 +63,26 @@ class CartItem extends StatelessWidget {
   Widget _buildProductImage() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
-      child: Image.asset(
-        image,
+      child: CachedNetworkImage(
+        imageUrl: image,
+        progressIndicatorBuilder: (context, url, downloadProgress) =>
+            Center(
+              child: CircularProgressIndicator(
+                value: downloadProgress.progress,
+                color: ColorsManager.mainGreen,
+              ),
+            ),
+        errorWidget: (context, url, error) =>
+        const Icon(HugeIcons.strokeRoundedImage02),
+        height: double.infinity,
         width: 100,
         fit: BoxFit.cover,
       ),
+      // child: Image.asset(
+      //   image,
+      //   width: 100,
+      //   fit: BoxFit.cover,
+      // ),
     );
   }
 
@@ -78,13 +94,13 @@ class CartItem extends StatelessWidget {
           category,
           style: TextStyles.font12GreyRegular,
         ),
-        verticalSpace(5),
-        Text(
-          productName,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyles.font14BlackSemiBold,
-        ),
+        // verticalSpace(5),
+        // Text(
+        //   productName,
+        //   maxLines: 1,
+        //   overflow: TextOverflow.ellipsis,
+        //   style: TextStyles.font14BlackSemiBold,
+        // ),
         verticalSpace(5),
         Text(
           description,

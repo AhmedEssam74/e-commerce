@@ -24,6 +24,7 @@ class AppTextFormField extends StatelessWidget {
       this.borderRadius,
       this.textInputType,
       this.isScrollPadding = false,
+      this.isReadOnly,
       required this.validator});
 
   final InputBorder? enabledBorder, focusedBorder;
@@ -41,6 +42,7 @@ class AppTextFormField extends StatelessWidget {
   final Function(String value)? onChange;
   final double? borderRadius;
   final bool isScrollPadding;
+  final bool? isReadOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,7 @@ class AppTextFormField extends StatelessWidget {
           onChange!(value);
         }
       },
+      readOnly: isReadOnly ?? false,
       style: textStyle ?? TextStyles.font13BlackMedium,
       obscureText: isObscureText ?? false,
       cursorColor: ColorsManager.mainGreen,

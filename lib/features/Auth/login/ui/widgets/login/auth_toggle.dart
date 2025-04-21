@@ -1,6 +1,7 @@
 import 'package:ecommerce/core/theming/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../core/helpers/spacing.dart';
 import '../../../../../../core/theming/styles.dart';
 
@@ -66,7 +67,7 @@ class _AuthToggleState extends State<AuthToggle> {
           curve: Curves.ease,
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25),
+            borderRadius: BorderRadius.circular(25.r),
             color: isSelected ? ColorsManager.mainGreen : Colors.transparent,
           ),
           child: Center(
