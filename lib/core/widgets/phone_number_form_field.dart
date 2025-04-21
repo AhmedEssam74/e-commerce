@@ -3,6 +3,7 @@ import 'package:ecommerce/core/helpers/spacing.dart';
 import 'package:ecommerce/core/theming/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hugeicons/hugeicons.dart';
 import '../theming/styles.dart';
@@ -11,9 +12,11 @@ class PhoneNumberFormField extends StatelessWidget {
   const PhoneNumberFormField({
     super.key,
     required this.phoneController,
+     this.phoneValidator,
     this.isScrollPadding = false,
   });
   final TextEditingController phoneController;
+  final FormFieldValidator? phoneValidator;
   final bool isScrollPadding;
   @override
   Widget build(BuildContext context) {
@@ -21,10 +24,10 @@ class PhoneNumberFormField extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25),
+        borderRadius: BorderRadius.circular(25.r),
         color: Colors.white,
         border: Border.all(
-          width: 0.6,
+          width: 0.6.w,
           color: Colors.grey,
         ),
       ),
@@ -34,10 +37,11 @@ class PhoneNumberFormField extends StatelessWidget {
           horizontalSpace(5),
           Expanded(
             child: SizedBox(
-              height: 35,
+              height: 35.h,
               child: Padding(
                 padding: const EdgeInsets.only(left: 10, bottom: 7),
                 child: TextFormField(
+                  validator: phoneValidator,
                   scrollPadding: EdgeInsets.only(
                       bottom: isScrollPadding
                           ? MediaQuery.of(context).viewInsets.bottom

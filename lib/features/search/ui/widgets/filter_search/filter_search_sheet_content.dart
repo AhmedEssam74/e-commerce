@@ -15,26 +15,26 @@ class FilterSearchSheetContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         verticalSpace(10),
-        Text(
-          'Popular Filters',
-          style: TextStyles.font16BlackSemiBold,
-        ),
-        verticalSpace(15),
-        FilterCheckBoxList(
-          items: const ['Best Seller', 'New arrivals', 'Last chance offers'],
-          onSelected: (List<dynamic> selectedItems) {},
-        ),
-        verticalSpace(20),
-        Text(
-          'Offers & Values',
-          style: TextStyles.font16BlackSemiBold,
-        ),
-        verticalSpace(15),
-        FilterCheckBoxList(
-          items: const ['Free shipping', 'Hot deals'],
-          onSelected: (List<dynamic> selectedItems) {},
-        ),
-        verticalSpace(20),
+        // Text(
+        //   'Popular Filters',
+        //   style: TextStyles.font16BlackSemiBold,
+        // ),
+        // verticalSpace(15),
+        // FilterCheckBoxList(
+        //   items: const ['Best Seller', 'New arrivals', 'Last chance offers'],
+        //   onSelected: (List<dynamic> selectedItems) {},
+        // ),
+        // verticalSpace(20),
+        // Text(
+        //   'Offers & Values',
+        //   style: TextStyles.font16BlackSemiBold,
+        // ),
+        // verticalSpace(15),
+        // FilterCheckBoxList(
+        //   items: const ['Free shipping', 'Hot deals'],
+        //   onSelected: (List<dynamic> selectedItems) {},
+        // ),
+        // verticalSpace(20),
         Text(
           'Sort By',
           style: TextStyles.font16BlackSemiBold,
@@ -74,8 +74,7 @@ class FilterSearchSheetContent extends StatelessWidget {
             ),
           ],
         ),
-        
-        verticalSpace(25),
+        // verticalSpace(25),
       ],
     );
   }
